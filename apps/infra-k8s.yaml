@@ -8,8 +8,8 @@ spec:
     namespace: ''
     server: 'https://kubernetes.default.svc'
   source:
-    path: ../k8s-manifests/overlays/infra
-    repoURL: "https://github.com/flybits/phoenix-kubernetes"
+    path: k8s-manifests/overlays/infra
+    repoURL: "https://github.com/derekneves/argocd"
     targetRevision: HEAD
     plugin: {}
   project: default

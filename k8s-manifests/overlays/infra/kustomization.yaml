@@ -44,7 +44,7 @@ patchesStrategicMerge:
 # - gatekeeper-patch.yaml
 # - envoyproxy-ratelimit-patch.yaml
 
-patches:
+#patches:
   # - target:
   #     kind: Deployment
   #     name: external-dns
