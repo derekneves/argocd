@@ -5,5 +5,5 @@ resources:
   - cluster/pdb.yaml
   - cluster/configmap.yaml
 
-patchesStrategicMerge:
-  - operator/patches.yaml
+# patchesStrategicMerge:
+#   - operator/patches.yaml
