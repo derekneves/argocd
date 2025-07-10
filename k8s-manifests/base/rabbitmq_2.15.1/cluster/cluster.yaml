@@ -37,25 +37,3 @@ spec:
     envConfig: |
       RABBITMQ_DEFAULT_VHOST="/"
       RABBITMQ_LOGS=""
-  override:
-    statefulSet:
-      spec:
-        template:
-          spec:
-            containers:
-            - name: rabbitmq
-              volumeMounts:
-              - mountPath: /etc/rabbitmq/conf
-                name: definitions
-            volumes:
-            - name: definitions
-              configMap:
-                name: rabbitmq-confs-configmap
-  secretBackend:
-    vault:
-      role: rabbitmq
-      annotations:
-        vault.hashicorp.com/template-static-secret-render-interval: "15m"
-      defaultUserPath: internal/data/messageQueue/rabbitmq
-      tls:
-        pkiIssuerPath: pki/issue/cert-issuer
