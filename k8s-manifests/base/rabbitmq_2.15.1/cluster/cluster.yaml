@@ -3,37 +3,37 @@ kind: RabbitmqCluster
 metadata:
   name: rabbitmq
   namespace: rabbitmq
-#  labels:                                            # To upgrade RabbitMQ Cluster Operator
-#    rabbitmq.com/pauseReconciliation: "true"
-spec:
-  replicas: 3
-  image: rabbitmq:4.1.0-management
-  resources:
-    requests:
-      cpu: '1'
-      memory: 6.6Gi
-    limits:
-      cpu: 2000m
-      memory: 6.6Gi
-  persistence:
-    storage: 40Gi
-  rabbitmq:
-    additionalPlugins:
-      - rabbitmq_peer_discovery_k8s
-      - rabbitmq_top
-      - rabbitmq_shovel
-      - rabbitmq_shovel_management
-      - rabbitmq_prometheus
-    additionalConfig: |
-      #management.load_definitions = /etc/rabbitmq/conf/definitions.json
-      log.console = true
-      log.console.level = warning
-      log.console.formatter = json
-      log.console.formatter.json.field_map = verbosity:v time msg domain file line pid level:-
-      log.console.formatter.json.verbosity_map = debug:7 info:6 notice:5 warning:4 error:3 critical:2 alert:1 emergency:0
-      log.console.formatter.time_format = epoch_usecs
-      ssl_options.verify = verify_none
-      ssl_options.fail_if_no_peer_cert = false
-    envConfig: |
-      RABBITMQ_DEFAULT_VHOST="/"
-      RABBITMQ_LOGS=""
+# #  labels:                                            # To upgrade RabbitMQ Cluster Operator
+# #    rabbitmq.com/pauseReconciliation: "true"
+# spec:
+#   replicas: 3
+#   image: rabbitmq:4.1.0-management
+#   resources:
+#     requests:
+#       cpu: '1'
+#       memory: 6.6Gi
+#     limits:
+#       cpu: 2000m
+#       memory: 6.6Gi
+#   persistence:
+#     storage: 40Gi
+#   rabbitmq:
+#     additionalPlugins:
+#       - rabbitmq_peer_discovery_k8s
+#       - rabbitmq_top
+#       - rabbitmq_shovel
+#       - rabbitmq_shovel_management
+#       - rabbitmq_prometheus
+#     additionalConfig: |
+#       #management.load_definitions = /etc/rabbitmq/conf/definitions.json
+#       log.console = true
+#       log.console.level = warning
+#       log.console.formatter = json
+#       log.console.formatter.json.field_map = verbosity:v time msg domain file line pid level:-
+#       log.console.formatter.json.verbosity_map = debug:7 info:6 notice:5 warning:4 error:3 critical:2 alert:1 emergency:0
+#       log.console.formatter.time_format = epoch_usecs
+#       ssl_options.verify = verify_none
+#       ssl_options.fail_if_no_peer_cert = false
+#     envConfig: |
+#       RABBITMQ_DEFAULT_VHOST="/"
+#       RABBITMQ_LOGS=""
