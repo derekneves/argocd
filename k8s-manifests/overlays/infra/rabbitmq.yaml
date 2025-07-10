@@ -1,0 +1,35 @@
+# based on t3a.medium as nodegroup
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  image: rabbitmq:4.1.0-management
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1400Mi
+    limits:
+      cpu: '1'
+      memory: 1400Mi
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_peer_discovery_k8s
+      - rabbitmq_top
+      - rabbitmq_shovel
+      - rabbitmq_shovel_management
+      - rabbitmq_prometheus
+    additionalConfig: |
+      management.load_definitions = /etc/rabbitmq/conf/definitions.json
+      log.console = true
+      log.console.level = debug
+      log.console.formatter = json
+      log.console.formatter.json.field_map = verbosity:v time msg domain file line pid level:-
+      log.console.formatter.json.verbosity_map = debug:7 info:6 notice:5 warning:4 error:3 critical:2 alert:1 emergency:0
+      log.console.formatter.time_format = epoch_usecs
+      ssl_options.verify = verify_none
+      ssl_options.fail_if_no_peer_cert = false
+    envConfig: |
+      RABBITMQ_DEFAULT_VHOST="/"
+      RABBITMQ_LOGS=""

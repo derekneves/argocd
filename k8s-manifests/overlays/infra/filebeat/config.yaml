@@ -1,0 +1,174 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: kube-system
+  labels:
+    k8s-app: filebeat
+data:
+  filebeat.yml: |-
+    setup.template.enabled: false
+    setup.template.settings:
+      index.number_of_shards: 1
+      index.number_of_replicas: 1
+    setup.template.name: "filebeat"
+    setup.template.pattern: "filebeat"
+    setup.ilm.enabled: false
+    setup.pack.security.enabled: false
+    setup.xpack.graph.enabled: false
+    setup.xpack.watcher.enabled: false
+    setup.xpack.monitoring.enabled: false
+    setup.xpack.reporting.enabled: false
+
+    # Enable filebeat config reloading
+    filebeat.config:
+      inputs:
+        enabled: true
+        path: ${path.config}/inputs.d/*.yml
+        reload.enabled: true
+        reload.period: 10s
+      modules:
+        enabled: true
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: true
+        reload.period: 10s
+    filebeat.inputs:
+    - type: container
+      paths:
+        - /var/log/containers/*.log
+      processors:
+        - add_kubernetes_metadata:
+            host: ${NODE_NAME}
+            default_matchers.enabled: false
+            matchers:
+            - logs_path:
+                logs_path: "/var/log/containers/"
+            add_resource_metadata:
+              node:
+                enabled: false
+    processors:
+      - add_fields:
+          fields:
+            env: ${NAMESPACE}    
+      - drop_fields:
+          fields: ["log.file.path", "agent.ephemeral_id", "agent.id"]
+      - decode_json_fields:
+          fields: [ "message" ]
+          target: ""
+          overwrite_keys: true
+      - drop_event:
+          when:
+            or:
+              - contains:
+                  kubernetes.container.name: "weave"
+              - contains:
+                  kubernetes.container.name: "external-dns"
+              - contains:
+                  kubernetes.container.name: "logrotate"
+              - contains:
+                  kubernetes.container.name: "filebeat"
+              - contains:
+                  kubernetes.container.name: "nginx-ingress-controller"
+              - contains:
+                  kubernetes.container.name: "controller"
+              - contains:
+                  kubernetes.container.name: "metricbeat"
+              - contains:
+                  kubernetes.container.name: "linkerd-proxy"
+              - contains:
+                  kubernetes.container.name: "elector"
+              - contains:
+                  kubernetes.container.name: "cluster-register"                                                      
+              - contains:
+                  kubernetes.container.name: "prometheus-adapter" 
+              - contains:
+                  kubernetes.container.name: "kube-state-metrics" 
+              - contains:
+                  kubernetes.container.name: "k8s-cloudwatch-adapter"                                     
+              - contains:
+                  kubernetes.container.name: "linkerd-init"                                 
+              - contains:
+                  kubernetes.container.name: "autoscaler"
+              - contains:
+                  kubernetes.container.name: "grafana-sc-dashboard"
+              - contains:
+                  kubernetes.container.name: "tap-injector"
+              - contains:
+                  kubernetes.container.name: "consul"
+              - contains:
+                  kubernetes.container.name: "vault-agent-init"
+              - contains:
+                  kubernetes.container.name: "aws-node"
+              - contains:
+                  kubernetes.container.name: "fleet-agent"
+              - contains:
+                  kubernetes.container.name: "resources-monitoring"
+              - contains:
+                  kubernetes.namespace: "observability"
+              - contains:
+                  kubernetes.namespace: "mongodb"
+              - contains:
+                  kubernetes.namespace: "prometheus"
+              - contains:
+                  kubernetes.namespace: "cattle-prometheus"
+              - contains:
+                  kubernetes.namespace: "rabbitmq"
+              - contains:
+                  kubernetes.namespace: "rabbitmq-system"
+              - contains:
+                  cloud.provider: "aws"
+              - contains:
+                  kubernetes.container.name: "boundary-init"
+              - contains:
+                  kubernetes.namespace: "gatekeeper-system"
+              - contains:
+                  kubernetes.namespace: "kube-system"
+              - contains:
+                  kubernetes.namespace: "kubecost"
+              - and:
+                  - contains:
+                      kubernetes.namespace: "gloo-gateway"
+                  - not:
+                      contains:
+                        kubernetes.container.name: "gateway-proxy"
+              - and:
+                  - contains:
+                      kubernetes.container.name: "gateway-proxy"
+                  - or:
+                      - not:
+                          has_fields: ['upstreamLogLevel']
+                      - not:
+                          regexp:
+                            upstreamLogLevel: '^(debug|info|warn|error)$(\w*)'
+                      - and:
+                          - equals:
+                              upstreamLogLevel: "error"
+                          - range:
+                              res.statusCode.lt: 500
+                              res.statusCode.gt: 0
+                      - and:
+                          - equals:
+                              upstreamLogLevel: "warn"
+                          - range:
+                              res.statusCode.lt: 400
+                              res.statusCode.gt: 0
+                      - and:
+                          - equals:
+                              upstreamLogLevel: "info"
+                          - range:
+                              res.statusCode.lt: 300
+                              res.statusCode.gte: 200
+
+    output.elasticsearch:
+      hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9243}']
+      username: ${ELASTICSEARCH_USERNAME}
+      password: ${ELASTICSEARCH_PASSWORD}
+      index: "filebeat-7-datastream"
+      indices:
+        - index: "filebeat-vault-datastream"
+          when.equals:
+            kubernetes.container.name: "vault"
+        - index: "filebeat-boundary-datastream"
+          when.equals:
+            kubernetes.container.name: "boundary-controller"

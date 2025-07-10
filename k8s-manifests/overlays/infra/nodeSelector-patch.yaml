@@ -1,0 +1,49 @@
+apiVersion: mongodb.com/v1
+kind: MongoDB
+metadata:
+  name: flybits
+  namespace: mongodb
+spec:
+  podSpec:
+    podTemplate:
+      spec:
+        containers:
+        - name: mongodb-enterprise-database
+          resources:
+            # based on t3a.medium node group
+            requests:
+              cpu: 1000m
+              memory: 2500Mi # adjusted for infra
+            limits:
+              cpu: 2000m
+              memory: 2500Mi # adjusted for infra
+        nodeSelector:
+          AppType: mongodb
+        tolerations:
+        - key: "AppType"
+          operator: "Equal"
+          value: "mongodb"
+          effect: "NoExecute"
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  pod-anti-affinity: flybits
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-enterprise-operator
+  namespace: mongodb
+spec:
+  template:
+    spec:
+      nodeSelector:
+        AppType: mongodb
+      tolerations:
+      - key: "AppType"
+        operator: "Equal"
+        value: "mongodb"
+        effect: "NoExecute"

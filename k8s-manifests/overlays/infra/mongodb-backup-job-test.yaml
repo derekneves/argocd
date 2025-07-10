@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-backup-pvc-test
+  namespace: default
+spec:
+  resources:
+    requests:
+      storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp3
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-backup-test
+  namespace: default   # namespace where the cronjob will be deployed
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: docker-registry
+      serviceAccountName: mongodb-backup-s3-sa
+      # Volumes configuration referencing the claim
+      volumes:
+        - name: mongodb-data-test
+          persistentVolumeClaim:
+            claimName: mongodb-backup-pvc-test
+      containers:
+        - name: mongodb-backup-test
+          image: flybits/mongodb-backup:c5f95a8
+          command: ["/bin/bash", "-c", "sh ./backup.sh"]       #command to run when container starts
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /mongodb
+              name: mongodb-data-test
+          env:
+              # Mongodb
+            - name: MONGODB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-backup-secrets
+                  key: host
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-backup-secrets
+                  key: user
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-backup-secrets
+                  key: password
+              # S3
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-backup-secrets
+                  key: bucket_to_fail
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      nodeSelector:
+        AppType: "essentials"
+        topology.kubernetes.io/zone: us-east-1b # this is the AZ where the pod will be deployed
+      tolerations:
+      - key: "AppType"
+        operator: "Equal"
+        value: "essentials"
+        effect: "NoExecute"

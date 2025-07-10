@@ -1,0 +1,9 @@
+resources:
+  - operator/operator.yaml
+  - cluster/cluster.yaml
+  - cluster/namespace.yaml
+  - cluster/pdb.yaml
+  - cluster/configmap.yaml
+
+patchesStrategicMerge:
+  - operator/patches.yaml

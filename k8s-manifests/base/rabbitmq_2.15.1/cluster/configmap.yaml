@@ -1,0 +1,32 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rabbitmq-confs-configmap
+  namespace: rabbitmq
+data:
+  definitions.json: |-
+    {
+      "policies": [
+        {
+          "name": "all",
+          "pattern": ".*",
+          "vhost": "/",
+          "definition": {
+            "max-length":	15000000,
+            "overflow": "reject-publish",
+            "queue-mode":	"lazy"
+          }
+        },
+        {
+          "name": "delivery-limit",
+          "pattern": ".*",
+          "vhost": "/",
+          "apply-to": "quorum_queues",
+          "definition": {
+            "delivery-limit": 10000,
+            "max-length":	15000000,
+            "overflow": "reject-publish"
+          }
+        }
+      ]
+    }

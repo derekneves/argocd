@@ -1,0 +1,32 @@
+# For ArgoCD not to be stuck on shutdown environments, scheduling to essentials ng
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gatekeeper-audit
+  namespace: gatekeeper-system
+spec:
+  template:
+    spec:
+      nodeSelector:
+        AppType: essentials
+      tolerations:
+      - key: "AppType"
+        operator: "Equal"
+        value: "essentials"
+        effect: "NoExecute"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gatekeeper-controller-manager
+  namespace: gatekeeper-system
+spec:
+  template:
+    spec:
+      nodeSelector:
+        AppType: essentials
+      tolerations:
+      - key: "AppType"
+        operator: "Equal"
+        value: "essentials"
+        effect: "NoExecute"

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratelimit
+  namespace: gloo-gateway
+spec:
+  template:
+    spec:
+      containers:
+        - name: ratelimit
+          env:
+            # REDIS_HOST and REDIS_PORT should be ordered before REDIS_URL
+            - name: REDIS_HOST
+              valueFrom: {secretKeyRef: {name: "redis", key: redisHost}}
+            - name: REDIS_PORT
+              valueFrom: {secretKeyRef: {name: "redis", key: redisPort}}
+            - name: REDIS_URL
+              value: $(REDIS_HOST):$(REDIS_PORT)
+            - name: REDIS_TLS
+              value: "1"

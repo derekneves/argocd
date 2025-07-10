@@ -1,0 +1,12 @@
+varReference:
+  - path: stringData
+    kind: Secret
+  - path: stringData/host
+    kind: Secret
+  - path: stringData/user
+    kind: Secret
+  - path: stringData/password
+    kind: Secret
+  - path: stringData/bucket
+    kind: Secret
+
