@@ -1,22 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rabbitmq-cluster-operator
-  namespace: rabbitmq-system
-spec:
-  template:
-    spec:
-      containers:
-      - name: operator
-        env:
-        - name: DEFAULT_IMAGE_PULL_SECRETS
-          value: "docker-registry"
-      nodeSelector:
-        AppType: "essentials"
-      tolerations:
-      - key: "AppType"
-        operator: "Equal"
-        value: "essentials"
-        effect: "NoExecute"
-      imagePullSecrets:
-        - name: docker-registry
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: rabbitmq-cluster-operator
+#   namespace: rabbitmq-system
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: operator
+#         env:
+#         - name: DEFAULT_IMAGE_PULL_SECRETS
+#           value: "docker-registry"
+#       nodeSelector:
+#         AppType: "essentials"
+#       tolerations:
+#       - key: "AppType"
+#         operator: "Equal"
+#         value: "essentials"
+#         effect: "NoExecute"
+#       imagePullSecrets:
+#         - name: docker-registry

@@ -42,13 +42,6 @@ spec:
       spec:
         template:
           spec:
-            nodeSelector:
-              AppType: "rabbitmq"
-            tolerations:
-            - key: "AppType"
-              operator: "Equal"
-              value: "rabbitmq"
-              effect: "NoExecute"
             containers:
             - name: rabbitmq
               volumeMounts:
