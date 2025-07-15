@@ -20,7 +20,7 @@ resources:
 # # - ../../base/secrets/observability
 # - ../../base/secrets/mongodb
 # - ../../base/envoyproxy-ratelimit
-# - ../../base/cert-manager
+  - ../../base/cert-manager
 # - ../../base/karpenter
 # - ../../base/kube-prometheus
 # - ../../base/grafana/agent
