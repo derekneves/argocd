@@ -21,7 +21,7 @@ spec:
       - rabbitmq_shovel_management
       - rabbitmq_prometheus
     additionalConfig: |
-      management.load_definitions = /etc/rabbitmq/conf/definitions.json
+      #management.load_definitions = /etc/rabbitmq/conf/definitions.json
       log.console = true
       log.console.level = debug
       log.console.formatter = json
