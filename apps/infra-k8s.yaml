@@ -4,9 +4,9 @@ metadata:
   name: infra-k8s
 spec:
   destination:
-    name: ''
+    name: in-cluster
     namespace: ''
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
   source:
     path: k8s-manifests/overlays/infra
     repoURL: "https://github.com/derekneves/argocd"
