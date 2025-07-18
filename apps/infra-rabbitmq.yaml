@@ -6,7 +6,7 @@ spec:
   destination:
     name: in-cluster
     namespace: ''
-    server: https://kubernetes.default.svc
+    #server: https://kubernetes.default.svc
   source:
     path: k8s-manifests/overlays/infra/apps/rabbitmq
     repoURL: "https://github.com/derekneves/argocd"
