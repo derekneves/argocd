@@ -4,21 +4,20 @@ metadata:
   name: infra-k8s
 spec:
   destination:
-    name: in-cluster
     namespace: ''
-    #server: https://kubernetes.default.svc
+    server: https://kubernetes.default.svc
   source:
     path: k8s-manifests/overlays/infra
-    repoURL: "https://github.com/derekneves/argocd"
+    repoURL: https://github.com/derekneves/argocd
     targetRevision: HEAD
-    plugin: {}
+  sources: []
   project: default
   syncPolicy:
     syncOptions:
-    - PruneLast=true
-#    automated:
+      - PruneLast=true
+    automated:
 #      prune: true
-#      selfHeal: true
+      selfHeal: true
   # ignoreDifferences:
   # - kind: ValidatingWebhookConfiguration
   #   group: admissionregistration.k8s.io
