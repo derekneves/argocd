@@ -31,11 +31,11 @@ resources:
 commonAnnotations:
   "flybits.environment": infra
 
-patchesStrategicMerge:
+#patchesStrategicMerge:
 # - mongodb-clusters.yaml
 # - filebeat/config.yaml
 # - nodeSelector-patch.yaml
-  - rabbitmq.yaml
+#  - rabbitmq.yaml
 # - karpenter-nodepool.yaml
 # # - nodelocaldns-patches.yaml
 # - filebeat-patch.yaml
