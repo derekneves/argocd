@@ -7,7 +7,7 @@ spec:
     namespace: ''
     server: https://kubernetes.default.svc
   source:
-    path: k8s-manifests/overlays/infra/apps/cert-manager
+    path: k8s-manifests/overlays/infra/apps/infra-cert-manager
     repoURL: https://github.com/derekneves/argocd
     targetRevision: HEAD
   sources: []
