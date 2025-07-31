@@ -15,7 +15,7 @@ resources:
 # # - ../../base/observability/base
 # #- ../../base/observability/metricbeat
 # # - cluster-autoscaler-priority-expander-cm.yaml
-##  - ../../base/rabbitmq_2.15.1
+  - ../../base/rabbitmq_2.15.1
 # - ../../base/secrets
 # # - ../../base/secrets/observability
 # - ../../base/secrets/mongodb
@@ -31,11 +31,11 @@ resources:
 commonAnnotations:
   "flybits.environment": infra
 
-#patchesStrategicMerge:
+patchesStrategicMerge:
 # - mongodb-clusters.yaml
 # - filebeat/config.yaml
 # - nodeSelector-patch.yaml
-#  - rabbitmq.yaml
+  - rabbitmq.yaml
 # - karpenter-nodepool.yaml
 # # - nodelocaldns-patches.yaml
 # - filebeat-patch.yaml
