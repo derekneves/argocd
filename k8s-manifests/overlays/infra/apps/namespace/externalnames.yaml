@@ -1,0 +1,11 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb-cluster-externalname
+spec:
+  type: ExternalName
+  externalName: flybits-svc.mongodb.svc.cluster.local
+  ports:
+  - port: 27017
+---

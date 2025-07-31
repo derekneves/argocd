@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../../base
+  - ../../../base/efs-provisioner
+  - namespace_limits.yaml
+  - apps-high-priority-class.yaml
+  #- ../../../base/mongodb # single mongodb pod resource
+  #- mongodb-lb.yaml # single mongodb pod resource
+  - externalnames.yaml
+
+namespace: infra
+
+patchesStrategicMerge:
+  - efs-provisioner.yaml
+
+configMapGenerator:
+  - name: efs-provisioner
+    behavior: merge
+    literals:
+      - pod-namespace=infra
+      - efs-server=fs-04122d87.efs.us-east-1.amazonaws.com
+      - file.system.id=fs-04122d87
+      - aws.region=us-east-1
