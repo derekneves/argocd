@@ -16,7 +16,7 @@ resources:
 # #- ../../base/observability/metricbeat
 # # - cluster-autoscaler-priority-expander-cm.yaml
   - ../../../../base/rabbitmq_2.15.1
-  - configmap.yaml
+#  - configmap.yaml
 # - ../../base/secrets
 # # - ../../base/secrets/observability
 # - ../../base/secrets/mongodb
