@@ -1,0 +1,8 @@
+argocd application migration - kustomize raw
+
+- make sure orphan is true in source mono application
+- create phoenix-kubernetes {env}/application directory and add kustomization.yaml
+- create argocd application manifest and adding to tools  argocd application kustomization.yaml
+- push/sync new argocd, new argocd application will show warnings 
+- remove application from source mono application and sync (NO PRUNE) 
+    Cancel the autosync from pipeline if needed or make sure prune is off!

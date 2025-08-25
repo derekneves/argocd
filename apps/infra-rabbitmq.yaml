@@ -14,10 +14,10 @@ spec:
   project: default
   syncPolicy:
     syncOptions:
-      - PruneLast=true
-    automated:
-      prune: false
-      selfHeal: true
+    - PruneLast=true
+  #   automated:
+  #     prune: true
+  #     selfHeal: true
   # ignoreDifferences:
   # - kind: ValidatingWebhookConfiguration
   #   group: admissionregistration.k8s.io
