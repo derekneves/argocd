@@ -78,42 +78,42 @@ patchesStrategicMerge:
   #       kind: PodDisruptionBudget
   #       name: prometheus-k8s
 
-# configMapGenerator:
-# - name: system-config
-#   namespace: kube-system
-#   behavior: merge
-#   literals:
-#   - eks-cluster=infra-eks-cluster
-#   - aws-region=us-east-1
-#   - dns-domain-filter=infra.flybits.com
-#   - dns-owner-id=Z0234500G32Y6J0QSUGV
-#   - aws-account-id=042110863587
-#   - environment=infra
-# - name: secrets-config
-#   namespace: $(ENVIRONMENT_NAME_SECRET)
-#   behavior: merge
-#   literals:
-#   - environment-id=infra-2ty8HU
-# - name: prometheus-config
-#   namespace: monitoring
-#   behavior: merge
-#   literals:
-#     - prometheus-environment=infra
-#     - environment_tier="lower"
-#     - group_interval="1h"
-#     - group_wait="10s"
-#     - repeat_interval="12h"
-#     - slack_webhook_channel="#alerts-lower-envs"
-#     - requests_slack_webhook_channel="#alerts-latency-lower-envs"
-#     - latency_slack_webhook_channel="#alerts-request-errors-lower-envs"
-#     - rabbitmq_queue_messages_threshold="200000"
-#     - rabbitmq_total_messages_threshold="1000000"
-#     - rabbitmq_connections_threshold="1000"
-# - name: grafana-config
-#   namespace: monitoring
-#   behavior: merge
-#   literals:
-#     - grafana_url="https://logs-prod-006.grafana.net"
+configMapGenerator:
+- name: system-config
+  namespace: kube-system
+  behavior: merge
+  literals:
+  - eks-cluster=infra-eks-cluster
+  - aws-region=us-east-1
+  - dns-domain-filter=infra.flybits.com
+  - dns-owner-id=Z0234500G32Y6J0QSUGV
+  - aws-account-id=042110863587
+  - environment=infra
+- name: secrets-config
+  namespace: infra
+  behavior: merge
+  literals:
+  - environment-id=infra-2ty8HU
+- name: prometheus-config
+  namespace: monitoring
+  behavior: merge
+  literals:
+    - prometheus-environment=infra
+    - environment_tier="lower"
+    - group_interval="1h"
+    - group_wait="10s"
+    - repeat_interval="12h"
+    - slack_webhook_channel="#alerts-lower-envs"
+    - requests_slack_webhook_channel="#alerts-latency-lower-envs"
+    - latency_slack_webhook_channel="#alerts-request-errors-lower-envs"
+    - rabbitmq_queue_messages_threshold="200000"
+    - rabbitmq_total_messages_threshold="1000000"
+    - rabbitmq_connections_threshold="1000"
+- name: grafana-config
+  namespace: monitoring
+  behavior: merge
+  literals:
+    - grafana_url="https://logs-prod-006.grafana.net"
 
 # configurations:
 #   - transformer_config.yaml
