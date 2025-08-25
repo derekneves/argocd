@@ -6,7 +6,6 @@ metadata:
   namespace: rabbitmq
 spec:
   image: rabbitmq:4.1.0-management
-  sdfg
   resources:
     requests:
       cpu: 500m
