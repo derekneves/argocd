@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: my-app-config
+  namespace: rabbitmq
 data:
   # Key-value pairs for configuration settings
   database_host: mysql-service
