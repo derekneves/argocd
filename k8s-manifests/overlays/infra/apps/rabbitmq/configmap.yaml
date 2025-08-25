@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  # Key-value pairs for configuration settings
+  database_host: mysql-service
+  database_port: "3306"
+  api_key: "some-long-api-key-string"
+  # You can also store multi-line content or entire file contents
+  log_settings.conf: |
+    [logging]
+    level = INFO
+    format = %(asctime)s - %(levelname)s - %(message)s
