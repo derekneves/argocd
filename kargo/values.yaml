@@ -1,5 +1,0 @@
-api:
-  adminAccount:
-    passwordHash: "$$2y$$10$$7Nyk7uBw5ViuGZZ9iYC5TuQiKIMp2NRKVflQwjsv13pUN5oCnrZKK"
-    tokenSigningKey: "CZFC1dGoFWr5xQPC4kGrv8WR9dH4TYf4"
-    tokenTTL: 24h

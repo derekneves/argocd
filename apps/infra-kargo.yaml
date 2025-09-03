@@ -8,17 +8,18 @@ spec:
   destination:
     namespace: kargo
     server: https://kubernetes.default.svc
-  sources:
-    - repoURL: ghcr.io/akuity/kargo-charts
-      chart: kargo
-      targetRevision: "1.7.4"
-      helm:
-        valueFiles:
-          - $values/kargo/values.yaml
-    - repoURL: https://github.com/derekneves/argocd
-      targetRevision: main
-      ref: values
-      path: kargo/values.yaml
+  source:
+    repoURL: ghcr.io/akuity/kargo-charts
+    chart: kargo
+    targetRevision: 1.7.4
+    helm:
+      parameters:
+        - name: api.adminAccount.passwordHash
+          # Note: A bcrypt-hashed password will contain `$` characters that
+          # MUST each be escaped as `$$`
+          value: $$2y$$10$$7Nyk7uBw5ViuGZZ9iYC5TuQiKIMp2NRKVflQwjsv13pUN5oCnrZKK
+        - name: api.adminAccount.tokenSigningKey
+          value: CZFC1dGoFWr5xQPC4kGrv8WR9dH4TYf4
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
